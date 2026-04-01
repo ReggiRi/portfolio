@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Портфолио | Строитель ReggiRi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0c10;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            padding: 4rem 0 2rem;
+            border-bottom: 1px solid #2a2e36;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #c0a56b;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #8a8f99;
+        }
+
+        /* языковой селектор */
+        .lang-selector {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            background: #111418aa;
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            backdrop-filter: blur(4px);
+            z-index: 50;
+        }
+        .lang-btn {
+            background: transparent;
+            border: 1px solid #3a3f4a;
+            color: #ddd;
+            padding: 0.3rem 0.8rem;
+            border-radius: 24px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .lang-btn:hover, .lang-btn.active {
+            background: #c0a56b;
+            border-color: #c0a56b;
+            color: #0a0c10;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .card {
+            background: #111418;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #2a2e36;
+            transition: transform 0.2s, border-color 0.2s;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: #c0a56b;
+        }
+
+        .card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            color: #c0a56b;
+        }
+
+        .card p {
+            color: #a0a6b0;
+            margin-bottom: 1rem;
+        }
+
+        .tools {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tool-tag {
+            background: #1e2329;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: #b0b7c2;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+            color: #5f6a7a;
+            font-size: 0.85rem;
+            border-top: 1px solid #2a2e36;
+        }
+
+        /* Модальное окно */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 80vh;
+        }
+
+        .modal-content img {
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            font-size: 32px;
+            color: white;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-weight: bold;
+        }
+
+        .close:hover {
+            color: #c0a56b;
+        }
+
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.6);
+            color: white;
+            border: none;
+            font-size: 32px;
+            padding: 16px 24px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .nav-btn:hover {
+            background: #c0a56b;
+            color: #0a0c10;
+        }
+
+        .prev {
+            left: -60px;
+        }
+
+        .next {
+            right: -60px;
+        }
+
+        .caption {
+            margin-top: 16px;
+            color: #c0a56b;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            .prev {
+                left: 10px;
+            }
+            .next {
+                right: 10px;
+            }
+            .nav-btn {
+                font-size: 24px;
+                padding: 12px 16px;
+            }
+            .lang-selector {
+                position: relative;
+                top: 0;
+                right: 0;
+                justify-content: center;
+                margin-bottom: 1rem;
+                background: transparent;
+                backdrop-filter: none;
+                padding: 0;
+            }
+            header {
+                padding-top: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="lang-selector">
+                <button class="lang-btn" data-lang="ru">🇷🇺 Рус</button>
+                <button class="lang-btn" data-lang="en">🇬🇧 EN</button>
+                <button class="lang-btn" data-lang="de">🇩🇪 DE</button>
+                <button class="lang-btn" data-lang="it">🇮🇹 IT</button>
+                <button class="lang-btn" data-lang="es">🇪🇸 ES</button>
+                <button class="lang-btn" data-lang="ar">🇸🇦 عربي</button>
+                <button class="lang-btn" data-lang="zh">🇨🇳 中文</button>
+                <button class="lang-btn" data-lang="be">🇧🇾 Бел</button>
+                <button class="lang-btn" data-lang="uk">🇺🇦 Укр</button>
+                <button class="lang-btn" data-lang="pl">🇵🇱 PL</button>
+            </div>
+            <h1>🏗️ ReggiRi</h1>
+            <div class="subtitle" data-i18n="subtitle">Наёмный билдер</div>
+        </header>
+
+        <div class="grid" id="projects-grid">
+            <!-- КАРТОЧКА 1: Небольшой дом (мини-дом) -->
+            <div class="card" data-gallery='["images/mini-house/mini-house-1.png", "images/mini-house/mini-house-2.png", "images/mini-house/mini-house-3.png", "images/mini-house/mini-house-4.png", "images/mini-house/mini-house-5.png"]' data-title-key="project1_title" data-desc-key="project1_desc">
+                <img src="images/mini-house/mini-house-1.png" alt="Превью работы 1">
+                <div class="card-content">
+                    <h3 data-i18n="project1_title">Небольшой дом</h3>
+                    <p data-i18n="project1_desc">Загородный дом для двух человек</p>
+                    <div class="tools">
+                        <span class="tool-tag">Axiom</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- КАРТОЧКА 2: Заброшенная Пятиэтажка (хрущёвка) 9 изображений -->
+            <div class="card" data-gallery='["images/big-house/big-house-1.png","images/big-house/big-house-2.png","images/big-house/big-house-3.png","images/big-house/big-house-4.png","images/big-house/big-house-5.png","images/big-house/big-house-6.png","images/big-house/big-house-7.png","images/big-house/big-house-8.png","images/big-house/big-house-9.png"]' data-title-key="project2_title" data-desc-key="project2_desc">
+                <img src="images/big-house/big-house-1.png" alt="Заброшенная хрущёвка">
+                <div class="card-content">
+                    <h3 data-i18n="project2_title">Заброшенная Пятиэтажка</h3>
+                    <p data-i18n="project2_desc">Давно заброшенный жилой дом</p>
+                    <div class="tools">
+                        <span class="tool-tag">Axiom</span>
+                        <span class="tool-tag">Little Tiles</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- КАРТОЧКА 3: Старая заправка (gas station) 6 изображений -->
+            <div class="card" data-gallery='["images/gase-station/gase-station-1.png","images/gase-station/gase-station-2.png","images/gase-station/gase-station-3.png","images/gase-station/gase-station-4.png","images/gase-station/gase-station-5.png","images/gase-station/gase-station-6.png"]' data-title-key="project3_title" data-desc-key="project3_desc">
+                <img src="images/gase-station/gase-station-1.png" alt="Старая заправка">
+                <div class="card-content">
+                    <h3 data-i18n="project3_title">Старая заправка</h3>
+                    <p data-i18n="project3_desc">Заброшенная заправка, на которой кто-то похозяйничал</p>
+                    <div class="tools">
+                        <span class="tool-tag">Axiom</span>
+                        <span class="tool-tag">Little Tiles</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <span data-i18n="footer">© 2026 ReggiRi | Портфолио строителя</span>
+        </footer>
+    </div>
+
+    <!-- Модальное окно -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <button class="close">&times;</button>
+            <button class="nav-btn prev">❮</button>
+            <img id="modal-img" src="" alt="">
+            <button class="nav-btn next">❯</button>
+            <div class="caption" id="modal-caption"></div>
+        </div>
+    </div>
+
+    <script>
+        // ======================= МУЛЬТИЯЗЫЧНЫЙ СЛОВАРЬ =======================
+        const translations = {
+            ru: {
+                subtitle: "Наёмный билдер",
+                project1_title: "Небольшой дом",
+                project1_desc: "Загородный дом для двух человек",
+                project2_title: "Заброшенная Пятиэтажка",
+                project2_desc: "Давно заброшенный жилой дом",
+                project3_title: "Старая заправка",
+                project3_desc: "Заброшенная заправка, на которой кто-то похозяйничал",
+                footer: "© 2026 ReggiRi | Портфолио строителя"
+            },
+            en: {
+                subtitle: "Freelance Builder",
+                project1_title: "Cozy Cottage",
+                project1_desc: "Country house for two people",
+                project2_title: "Abandoned Khrushchyovka",
+                project2_desc: "Long-abandoned residential building",
+                project3_title: "Old Gas Station",
+                project3_desc: "An abandoned gas station where someone left their mark",
+                footer: "© 2026 ReggiRi | Builder's Portfolio"
+            },
+            de: {
+                subtitle: "Freiberuflicher Baumeister",
+                project1_title: "Kleines Haus",
+                project1_desc: "Landhaus für zwei Personen",
+                project2_title: "Verlassenes Plattenbau",
+                project2_desc: "Längst verlassenes Wohnhaus",
+                project3_title: "Alte Tankstelle",
+                project3_desc: "Verlassene Tankstelle, die jemand umgestaltet hat",
+                footer: "© 2026 ReggiRi | Portfolio eines Baumeisters"
+            },
+            it: {
+                subtitle: "Costruttore freelance",
+                project1_title: "Piccola casa",
+                project1_desc: "Casa di campagna per due persone",
+                project2_title: "Palazzina abbandonata",
+                project2_desc: "Edificio residenziale abbandonato da tempo",
+                project3_title: "Vecchia stazione di servizio",
+                project3_desc: "Stazione di servizio abbandonata, qualcuno ci ha messo mano",
+                footer: "© 2026 ReggiRi | Portfolio del costruttore"
+            },
+            es: {
+                subtitle: "Constructor independiente",
+                project1_title: "Pequeña casa",
+                project1_desc: "Casa de campo para dos personas",
+                project2_title: "Bloque de viviendas abandonado",
+                project2_desc: "Edificio residencial abandonado hace tiempo",
+                project3_title: "Vieja gasolinera",
+                project3_desc: "Gasolinera abandonada donde alguien hizo de las suyas",
+                footer: "© 2026 ReggiRi | Portafolio del constructor"
+            },
+            ar: {
+                subtitle: "بناء مستقل",
+                project1_title: "منزل صغير",
+                project1_desc: "منزل ريفي لشخصين",
+                project2_title: "خروتشوف مهجورة",
+                project2_desc: "مبنى سكني مهجور منذ زمن",
+                project3_title: "محطة وقود قديمة",
+                project3_desc: "محطة وقود مهجورة، قام شخص ما بالتعديل فيها",
+                footer: "© 2026 ريجيري | محفظة البناء"
+            },
+            zh: {
+                subtitle: "自由建筑工",
+                project1_title: "小型住宅",
+                project1_desc: "两人乡村小屋",
+                project2_title: "废弃的赫鲁晓夫楼",
+                project2_desc: "早已被遗弃的居民楼",
+                project3_title: "旧加油站",
+                project3_desc: "废弃的加油站，有人曾经在这里翻新过",
+                footer: "© 2026 ReggiRi | 建筑工作品集"
+            },
+            be: {
+                subtitle: "Наёмны білдэр",
+                project1_title: "Невялікі дом",
+                project1_desc: "Загарадны дом для двух чалавек",
+                project2_title: "Закінутая Пяціпавярхоўка",
+                project2_desc: "Даўно закінуты жылы дом",
+                project3_title: "Старая запраўка",
+                project3_desc: "Закінутая запраўка, на якой нехта пагаспадарыў",
+                footer: "© 2026 ReggiRi | Портфоліо будаўніка"
+            },
+            uk: {
+                subtitle: "Найманий білдер",
+                project1_title: "Невеликий будинок",
+                project1_desc: "Заміський будинок для двох осіб",
+                project2_title: "Занедбана Хрущовка",
+                project2_desc: "Давно занедбаний житловий будинок",
+                project3_title: "Стара заправка",
+                project3_desc: "Занедбана заправка, на якій хтось господарював",
+                footer: "© 2026 ReggiRi | Портфоліо будівельника"
+            },
+            pl: {
+                subtitle: "Najemny budowniczy",
+                project1_title: "Mały domek",
+                project1_desc: "Dom wiejski dla dwóch osób",
+                project2_title: "Opuszczona Chruszczowka",
+                project2_desc: "Od dawna opuszczony budynek mieszkalny",
+                project3_title: "Stara stacja benzynowa",
+                project3_desc: "Opuszczona stacja, ktoś tam porządził",
+                footer: "© 2026 ReggiRi | Portfolio budowniczego"
+            }
+        };
+
+        let currentLang = 'ru';
+
+        // функция обновления текстов на странице
+        function applyLanguage(lang) {
+            if (!translations[lang]) return;
+            const t = translations[lang];
+            // все элементы с атрибутом data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t[key] !== undefined) {
+                    el.innerText = t[key];
+                }
+            });
+            // карточки: у них свои ключи для заголовка и описания через data-title-key / data-desc-key
+            document.querySelectorAll('.card').forEach(card => {
+                const titleKey = card.getAttribute('data-title-key');
+                const descKey = card.getAttribute('data-desc-key');
+                if (titleKey && t[titleKey]) {
+                    const titleEl = card.querySelector('h3');
+                    if (titleEl) titleEl.innerText = t[titleKey];
+                }
+                if (descKey && t[descKey]) {
+                    const descEl = card.querySelector('p');
+                    if (descEl) descEl.innerText = t[descKey];
+                }
+            });
+            // дополнительно обновляем динамический заголовок при открытой галерее (чтобы caption корректно переводился)
+            // сохраним текущее модальное состояние, чтобы при следующем открытии caption был на нужном языке
+            // также если модалка открыта, обновим caption в реальном времени
+            if (modal.classList.contains('active') && window._currentGalleryTitleKey) {
+                const newTitle = t[window._currentGalleryTitleKey] || window._currentGalleryTitleFallback;
+                currentTitle = newTitle;
+                modalCaption.textContent = `${newTitle} — ${currentIndex + 1} / ${currentImages.length}`;
+            }
+            // обновляем атрибут data-title для карточек? на самом деле для модалки title берется из переменной при открытии,
+            // но дополнительно сохраним для корректности. 
+            document.querySelectorAll('.card').forEach(card => {
+                const titleKey = card.getAttribute('data-title-key');
+                if (titleKey && t[titleKey]) {
+                    card.setAttribute('data-title-display', t[titleKey]);
+                }
+            });
+        }
+
+        // --- Галерея и модалка ---
+        let currentImages = [];
+        let currentIndex = 0;
+        let currentTitle = '';
+        let currentTitleKey = null;
+        let currentTitleFallback = '';
+
+        const modal = document.getElementById('modal');
+        const modalImg = document.getElementById('modal-img');
+        const modalCaption = document.getElementById('modal-caption');
+        const closeBtn = document.querySelector('.close');
+        const prevBtn = document.querySelector('.prev');
+        const nextBtn = document.querySelector('.next');
+
+        function openGallery(images, title, titleKey = null, fallbackTitle = '') {
+            currentImages = images;
+            currentTitle = title;
+            currentTitleKey = titleKey;
+            currentTitleFallback = fallbackTitle;
+            currentIndex = 0;
+            updateModal();
+            modal.classList.add('active');
+        }
+
+        function updateModal() {
+            if (currentImages.length > 0) {
+                modalImg.src = currentImages[currentIndex];
+                modalCaption.textContent = `${currentTitle} — ${currentIndex + 1} / ${currentImages.length}`;
+            }
+        }
+
+        function nextImage() {
+            if (currentImages.length > 0) {
+                currentIndex = (currentIndex + 1) % currentImages.length;
+                updateModal();
+            }
+        }
+
+        function prevImage() {
+            if (currentImages.length > 0) {
+                currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
+                updateModal();
+            }
+        }
+
+        // обработчики для открытия галереи по клику на карточку
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                // не даём всплыть если клик по модальным кнопкам (но их тут нет)
+                const galleryAttr = card.getAttribute('data-gallery');
+                const titleKey = card.getAttribute('data-title-key');
+                let titleText = '';
+                let fallback = '';
+                if (titleKey && translations[currentLang] && translations[currentLang][titleKey]) {
+                    titleText = translations[currentLang][titleKey];
+                    fallback = titleText;
+                } else {
+                    // запасной вариант: берём текст из h3
+                    const h3El = card.querySelector('h3');
+                    titleText = h3El ? h3El.innerText : 'Работа';
+                    fallback = titleText;
+                }
+                if (galleryAttr) {
+                    try {
+                        const images = JSON.parse(galleryAttr);
+                        if (images && images.length) {
+                            openGallery(images, titleText, titleKey, fallback);
+                        } else {
+                            console.warn('Галерея пуста');
+                        }
+                    } catch(e) {
+                        console.error('Ошибка парсинга галереи', e);
+                    }
+                }
+            });
+        });
+
+        // закрытие модалки
+        closeBtn.addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+        document.addEventListener('keydown', (e) => {
+            if (!modal.classList.contains('active')) return;
+            if (e.key === 'ArrowLeft') {
+                prevImage();
+            } else if (e.key === 'ArrowRight') {
+                nextImage();
+            } else if (e.key === 'Escape') {
+                modal.classList.remove('active');
+            }
+        });
+        prevBtn.addEventListener('click', prevImage);
+        nextBtn.addEventListener('click', nextImage);
+
+        // языковые кнопки
+        const langBtns = document.querySelectorAll('.lang-btn');
+        function setActiveLangButton(lang) {
+            langBtns.forEach(btn => {
+                if (btn.getAttribute('data-lang') === lang) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+
+        langBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const lang = btn.getAttribute('data-lang');
+                if (lang && translations[lang]) {
+                    currentLang = lang;
+                    applyLanguage(currentLang);
+                    setActiveLangButton(currentLang);
+                    // если модалка открыта, пересчитываем заголовок с учётом нового языка
+                    if (modal.classList.contains('active') && currentTitleKey && translations[currentLang] && translations[currentLang][currentTitleKey]) {
+                        currentTitle = translations[currentLang][currentTitleKey];
+                        modalCaption.textContent = `${currentTitle} — ${currentIndex + 1} / ${currentImages.length}`;
+                    } else if (modal.classList.contains('active') && !currentTitleKey) {
+                        // fallback: возможно title уже был статичный
+                        const activeCard = Array.from(document.querySelectorAll('.card')).find(card => {
+                            const gallery = card.getAttribute('data-gallery');
+                            if (gallery) {
+                                try {
+                                    const imgs = JSON.parse(gallery);
+                                    return imgs.length && imgs[0] === currentImages?.[0];
+                                } catch(e) {}
+                            }
+                            return false;
+                        });
+                        if (activeCard) {
+                            const newTitle = activeCard.querySelector('h3')?.innerText || currentTitle;
+                            currentTitle = newTitle;
+                            modalCaption.textContent = `${currentTitle} — ${currentIndex + 1} / ${currentImages.length}`;
+                        }
+                    }
+                }
+            });
+        });
+
+        // инициализация языка по умолчанию (русский)
+        applyLanguage('ru');
+        setActiveLangButton('ru');
+
+        // маленький фикс: для корректного отображения заголовка в модалке, если открыть её и сменить язык
+        // дополнительно слушаем, но основная логика выше в обработчике смены языка уже перехватывает
+        // также добавим сохранение текущего titleKey для переключения в модалке
+        window._currentGalleryTitleKey = null;
+        // переопределим openGallery, чтобы глобально запоминать ключ
+        const originalOpen = openGallery;
+        window.openGallery = function(images, title, titleKey, fallback) {
+            window._currentGalleryTitleKey = titleKey;
+            originalOpen(images, title, titleKey, fallback);
+        };
+        openGallery = function(images, title, titleKey, fallback) {
+            window._currentGalleryTitleKey = titleKey;
+            currentImages = images;
+            currentTitle = title;
+            currentTitleKey = titleKey;
+            currentTitleFallback = fallback;
+            currentIndex = 0;
+            updateModal();
+            modal.classList.add('active');
+        };
+        // перевязываем вызовы карточек на новую openGallery
+        document.querySelectorAll('.card').forEach(card => {
+            // удалим старый обработчик и повесим заново
+            const newCard = card.cloneNode(true);
+            card.parentNode.replaceChild(newCard, card);
+        });
+        // пересобираем обработчики заново (после замены нод)
+        const freshCards = document.querySelectorAll('.card');
+        freshCards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                const galleryAttr = card.getAttribute('data-gallery');
+                const titleKey = card.getAttribute('data-title-key');
+                let titleText = '';
+                if (titleKey && translations[currentLang] && translations[currentLang][titleKey]) {
+                    titleText = translations[currentLang][titleKey];
+                } else {
+                    const h3El = card.querySelector('h3');
+                    titleText = h3El ? h3El.innerText : 'Работа';
+                }
+                if (galleryAttr) {
+                    try {
+                        const images = JSON.parse(galleryAttr);
+                        if (images && images.length) {
+                            openGallery(images, titleText, titleKey, titleText);
+                        }
+                    } catch(e) { console.error(e); }
+                }
+            });
+        });
+        
+        // повторно применить язык, чтобы после пересоздания карточек тексты были актуальны
+        applyLanguage(currentLang);
+        setActiveLangButton(currentLang);
+        
+        // обновим ссылки на модальные кнопки (переменные остались валидными)
+        // и перепривяжем если нужно (они уже есть)
+        // фикс: возможно потребуется синхронизировать modalCaption при открытии
+        // всё готово.
+        console.log('Портфолио обновлено: добавлены работы "Заброшенная Пятиэтажка" (9 фото) и "Старая заправка" (6 фото), мультиязычность работает');
+    </script>
+</body>
+</html>
