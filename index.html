@@ -299,7 +299,6 @@
                     <p data-i18n="project2_desc">Давно заброшенный жилой дом</p>
                     <div class="tools">
                         <span class="tool-tag">Axiom</span>
-                        <span class="tool-tag">Little Tiles</span>
                     </div>
                 </div>
             </div>
@@ -312,7 +311,6 @@
                     <p data-i18n="project3_desc">Заброшенная заправка, на которой кто-то похозяйничал</p>
                     <div class="tools">
                         <span class="tool-tag">Axiom</span>
-                        <span class="tool-tag">Little Tiles</span>
                     </div>
                 </div>
             </div>
@@ -335,7 +333,7 @@
     </div>
 
     <script>
-        // ======================= МУЛЬТИЯЗЫЧНЫЙ СЛОВАРЬ =======================
+        
         const translations = {
             ru: {
                 subtitle: "Наёмный билдер",
@@ -440,19 +438,16 @@
         };
 
         let currentLang = 'ru';
-
-        // функция обновления текстов на странице
+       
         function applyLanguage(lang) {
             if (!translations[lang]) return;
             const t = translations[lang];
-            // все элементы с атрибутом data-i18n
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
                 if (t[key] !== undefined) {
                     el.innerText = t[key];
                 }
             });
-            // карточки: у них свои ключи для заголовка и описания через data-title-key / data-desc-key
             document.querySelectorAll('.card').forEach(card => {
                 const titleKey = card.getAttribute('data-title-key');
                 const descKey = card.getAttribute('data-desc-key');
@@ -465,16 +460,12 @@
                     if (descEl) descEl.innerText = t[descKey];
                 }
             });
-            // дополнительно обновляем динамический заголовок при открытой галерее (чтобы caption корректно переводился)
-            // сохраним текущее модальное состояние, чтобы при следующем открытии caption был на нужном языке
-            // также если модалка открыта, обновим caption в реальном времени
             if (modal.classList.contains('active') && window._currentGalleryTitleKey) {
                 const newTitle = t[window._currentGalleryTitleKey] || window._currentGalleryTitleFallback;
                 currentTitle = newTitle;
                 modalCaption.textContent = `${newTitle} — ${currentIndex + 1} / ${currentImages.length}`;
             }
-            // обновляем атрибут data-title для карточек? на самом деле для модалки title берется из переменной при открытии,
-            // но дополнительно сохраним для корректности. 
+           
             document.querySelectorAll('.card').forEach(card => {
                 const titleKey = card.getAttribute('data-title-key');
                 if (titleKey && t[titleKey]) {
@@ -483,7 +474,6 @@
             });
         }
 
-        // --- Галерея и модалка ---
         let currentImages = [];
         let currentIndex = 0;
         let currentTitle = '';
@@ -528,10 +518,10 @@
             }
         }
 
-        // обработчики для открытия галереи по клику на карточку
+        
         document.querySelectorAll('.card').forEach(card => {
             card.addEventListener('click', (e) => {
-                // не даём всплыть если клик по модальным кнопкам (но их тут нет)
+                
                 const galleryAttr = card.getAttribute('data-gallery');
                 const titleKey = card.getAttribute('data-title-key');
                 let titleText = '';
@@ -540,7 +530,7 @@
                     titleText = translations[currentLang][titleKey];
                     fallback = titleText;
                 } else {
-                    // запасной вариант: берём текст из h3
+                    
                     const h3El = card.querySelector('h3');
                     titleText = h3El ? h3El.innerText : 'Работа';
                     fallback = titleText;
@@ -560,7 +550,7 @@
             });
         });
 
-        // закрытие модалки
+        
         closeBtn.addEventListener('click', () => {
             modal.classList.remove('active');
         });
@@ -582,7 +572,7 @@
         prevBtn.addEventListener('click', prevImage);
         nextBtn.addEventListener('click', nextImage);
 
-        // языковые кнопки
+        
         const langBtns = document.querySelectorAll('.lang-btn');
         function setActiveLangButton(lang) {
             langBtns.forEach(btn => {
@@ -601,12 +591,11 @@
                     currentLang = lang;
                     applyLanguage(currentLang);
                     setActiveLangButton(currentLang);
-                    // если модалка открыта, пересчитываем заголовок с учётом нового языка
                     if (modal.classList.contains('active') && currentTitleKey && translations[currentLang] && translations[currentLang][currentTitleKey]) {
                         currentTitle = translations[currentLang][currentTitleKey];
                         modalCaption.textContent = `${currentTitle} — ${currentIndex + 1} / ${currentImages.length}`;
                     } else if (modal.classList.contains('active') && !currentTitleKey) {
-                        // fallback: возможно title уже был статичный
+                        
                         const activeCard = Array.from(document.querySelectorAll('.card')).find(card => {
                             const gallery = card.getAttribute('data-gallery');
                             if (gallery) {
@@ -627,15 +616,13 @@
             });
         });
 
-        // инициализация языка по умолчанию (русский)
+        
         applyLanguage('ru');
         setActiveLangButton('ru');
 
-        // маленький фикс: для корректного отображения заголовка в модалке, если открыть её и сменить язык
-        // дополнительно слушаем, но основная логика выше в обработчике смены языка уже перехватывает
-        // также добавим сохранение текущего titleKey для переключения в модалке
+    
         window._currentGalleryTitleKey = null;
-        // переопределим openGallery, чтобы глобально запоминать ключ
+        
         const originalOpen = openGallery;
         window.openGallery = function(images, title, titleKey, fallback) {
             window._currentGalleryTitleKey = titleKey;
@@ -651,13 +638,13 @@
             updateModal();
             modal.classList.add('active');
         };
-        // перевязываем вызовы карточек на новую openGallery
+        
         document.querySelectorAll('.card').forEach(card => {
-            // удалим старый обработчик и повесим заново
+            
             const newCard = card.cloneNode(true);
             card.parentNode.replaceChild(newCard, card);
         });
-        // пересобираем обработчики заново (после замены нод)
+        
         const freshCards = document.querySelectorAll('.card');
         freshCards.forEach(card => {
             card.addEventListener('click', (e) => {
@@ -681,14 +668,10 @@
             });
         });
         
-        // повторно применить язык, чтобы после пересоздания карточек тексты были актуальны
+        
         applyLanguage(currentLang);
         setActiveLangButton(currentLang);
         
-        // обновим ссылки на модальные кнопки (переменные остались валидными)
-        // и перепривяжем если нужно (они уже есть)
-        // фикс: возможно потребуется синхронизировать modalCaption при открытии
-        // всё готово.
         console.log('Портфолио обновлено: добавлены работы "Заброшенная Пятиэтажка" (9 фото) и "Старая заправка" (6 фото), мультиязычность работает');
     </script>
 </body>
