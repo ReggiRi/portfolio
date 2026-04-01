@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Портфолио | Строитель</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0c10;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            padding: 4rem 0 2rem;
+            border-bottom: 1px solid #2a2e36;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #c0a56b;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #8a8f99;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .card {
+            background: #111418;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #2a2e36;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: #c0a56b;
+        }
+
+        .card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            color: #c0a56b;
+        }
+
+        .card p {
+            color: #a0a6b0;
+            margin-bottom: 1rem;
+        }
+
+        .tools {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tool-tag {
+            background: #1e2329;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: #b0b7c2;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+            color: #5f6a7a;
+            font-size: 0.85rem;
+            border-top: 1px solid #2a2e36;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏗️ [ReggiRi]</h1>
+            <div class="subtitle">[Ббилдер]</div>
+        </header>
+
+        <div class="grid">
+            <!-- КАРТОЧКА 1 — ЗАМЕНИТЬ ФОТО И ТЕКСТ -->
+            <div class="card">
+                <img src="images/photo1.jpg" alt="Название работы">
+                <div class="card-content">
+                    <h3>[Название постройки]</h3>
+                    <p>[Короткое описание]</p>
+                    <div class="tools">
+                        <span class="tool-tag">WorldEdit</span>
+                        <span class="tool-tag">Axiom</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- КАРТОЧКА 2 -->
+            <div class="card">
+                <img src="images/photo2.jpg" alt="Название работы">
+                <div class="card-content">
+                    <h3>[Название постройки]</h3>
+                    <p>[Короткое описание]</p>
+                    <div class="tools">
+                        <span class="tool-tag">WorldEdit</span>
+                        <span class="tool-tag">Little Tiles</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- КАРТОЧКА 3 -->
+            <div class="card">
+                <img src="images/photo3.jpg" alt="Название работы">
+                <div class="card-content">
+                    <h3>[Название постройки]</h3>
+                    <p>[Короткое описание]</p>
+                    <div class="tools">
+                        <span class="tool-tag">WorldPainter</span>
+                        <span class="tool-tag">Axiom</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            © 2026 ReggiRi. Все права защищены.
+        </footer>
+    </div>
+</body>
+</html>
